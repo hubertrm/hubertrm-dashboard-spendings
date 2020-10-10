@@ -1,0 +1,6 @@
+INSERT INTO ORGANISATION (name) VALUES ('Belfius Bank');
+INSERT INTO ORGANISATION (name) VALUES ('BNP Paribas S.A');
+INSERT INTO ORGANISATION (name) VALUES ('Revolut Ltd');
+INSERT INTO ORGANISATION (name) VALUES ('Edenred');
+
+commit;
