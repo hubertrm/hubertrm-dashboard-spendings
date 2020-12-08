@@ -18,7 +18,7 @@ public class SpendingService {
     @Resource
     private SpendingRepository spendingRepository;
 
-    private final String SPENDING_NOT_FOUND_MESSAGE = "Spending not found for this id :: ";
+    private static final String SPENDING_NOT_FOUND_MESSAGE = "Spending not found for this id :: ";
 
     public List<Spending> getAllSpendings() {
         return spendingRepository.findAll();

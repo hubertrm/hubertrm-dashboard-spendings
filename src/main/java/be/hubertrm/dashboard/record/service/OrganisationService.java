@@ -18,7 +18,7 @@ public class OrganisationService {
     @Resource
     private OrganisationRepository organisationRepository;
 
-    private final String SPENDING_NOT_FOUND_MESSAGE = "Organisation not found for this id :: ";
+    private static final String SPENDING_NOT_FOUND_MESSAGE = "Organisation not found for this id :: ";
 
     public List<Organisation> getAllOrganisations() {
         return organisationRepository.findAll();
@@ -32,8 +32,7 @@ public class OrganisationService {
     }
 
     public Organisation createOrganisation(Organisation organisation) {
-        Organisation organisation1 = organisationRepository.save(organisation);
-        return organisation1;
+        return organisationRepository.save(organisation);
     }
 
     public Organisation updateOrganisation(Long organisationId, Organisation organisationDetails)

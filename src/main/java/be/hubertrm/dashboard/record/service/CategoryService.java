@@ -18,8 +18,8 @@ public class CategoryService {
     @Resource
     private CategoryRepository categoryRepository;
 
-    private final String CATEGORY_NOT_FOUND_MESSAGE = "Category not found for this id :: ";
-    private final String CATEGORY_NOT_FOUND_BY_NAME_MESSAGE = "Category not found for this name :: ";
+    private static final String CATEGORY_NOT_FOUND_MESSAGE = "Category not found for this id :: ";
+    private static final String CATEGORY_NOT_FOUND_BY_NAME_MESSAGE = "Category not found for this name :: ";
 
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();

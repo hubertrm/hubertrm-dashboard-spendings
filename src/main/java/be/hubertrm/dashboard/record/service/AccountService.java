@@ -18,8 +18,8 @@ public class AccountService {
     @Resource
     private AccountRepository accountRepository;
 
-    private final String ACCOUNT_NOT_FOUND_MESSAGE = "Account not found for this id :: ";
-    private final String ACCOUNT_NOT_FOUND_BY_NAME_MESSAGE = "Account not found for this name :: ";
+    private static final String ACCOUNT_NOT_FOUND_MESSAGE = "Account not found for this id :: ";
+    private static final String ACCOUNT_NOT_FOUND_BY_NAME_MESSAGE = "Account not found for this name :: ";
 
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();

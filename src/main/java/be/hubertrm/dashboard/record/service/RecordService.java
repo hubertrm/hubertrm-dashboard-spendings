@@ -23,11 +23,6 @@ public class RecordService implements IQueryService {
     public List<Record> getAllRecords() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-//        Query query = entityManager.createQuery(
-//                "SELECT sp.id, sp.spendingDate, sp.amount, ca.name, ac.name, sp.note FROM Spending sp, Category ca,"
-//                +" Account ac WHERE sp.categoryId = ca.id AND sp.accountId = ac.id ORDER BY sp.id");
-//        List<Record> recordList = (List<Record>)query.getResultList();
-
         TypedQuery<Record> typedQuery = entityManager.createQuery(
                 "SELECT NEW be.hubertrm.dashboard.record.model.Record(sp.id, sp.spendingDate, sp.amount, ca.name, ac.name, sp.note)"
                         +"FROM Spending sp, Category ca,"
