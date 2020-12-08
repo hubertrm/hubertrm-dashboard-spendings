@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>be.hubertrm.dashboard</groupId>
-	<artifactId>spending</artifactId>
+	<artifactId>record</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>spending</name>
-	<description>Rest API for the Spending Application</description>
+	<name>record</name>
+	<description>Rest API for the Record Application</description>
 
 	<dependencies>
 		<dependency>
