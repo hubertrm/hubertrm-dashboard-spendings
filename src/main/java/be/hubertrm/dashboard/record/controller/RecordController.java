@@ -1,8 +1,8 @@
 package be.hubertrm.dashboard.record.controller;
 
+import be.hubertrm.dashboard.record.dto.RecordDto;
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
 import be.hubertrm.dashboard.record.manager.RecordBusinessManager;
-import be.hubertrm.dashboard.record.model.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,18 +18,18 @@ public class RecordController {
     RecordBusinessManager recordBusinessManager;
 
     @GetMapping("/records")
-    public List<Record> getRecords() {
+    public List<RecordDto> getRecords() {
         return recordBusinessManager.getAllRecords();
     }
 
     @PostMapping("/records")
-    public long createRecord(@RequestBody Record record) throws ResourceNotFoundException {
-        return recordBusinessManager.createRecord(record);
+    public RecordDto createRecord(@RequestBody RecordDto recordDto) throws ResourceNotFoundException {
+        return recordBusinessManager.createOrUpdate(recordDto);
     }
 
     @PutMapping("/records/{id}")
-    public ResponseEntity<Long> updateRecord(@PathVariable(value = "id") Long recordId,
-                                             @RequestBody Record recordDetails) throws ResourceNotFoundException {
-        return ResponseEntity.ok(recordBusinessManager.updateRecord(recordId, recordDetails));
+    public ResponseEntity<RecordDto> updateRecord(@PathVariable(value = "id") Long recordId,
+                                             @RequestBody RecordDto recordDto) throws ResourceNotFoundException {
+        return ResponseEntity.ok(recordBusinessManager.createOrUpdate(recordDto));
     }
 }

@@ -1,4 +1,4 @@
-package be.hubertrm.dashboard.record.service;
+package be.hubertrm.dashboard.record.service.impl;
 
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
 import be.hubertrm.dashboard.record.model.Spending;

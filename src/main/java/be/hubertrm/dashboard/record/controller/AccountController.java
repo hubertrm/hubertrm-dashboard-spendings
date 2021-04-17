@@ -1,8 +1,9 @@
 package be.hubertrm.dashboard.record.controller;
 
+import be.hubertrm.dashboard.record.dto.SourceDto;
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
-import be.hubertrm.dashboard.record.model.Account;
-import be.hubertrm.dashboard.record.service.AccountService;
+import be.hubertrm.dashboard.record.model.Source;
+import be.hubertrm.dashboard.record.service.SourceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,33 +17,34 @@ import java.util.Map;
 public class AccountController {
 
     @Resource
-    private AccountService accountService;
+    private SourceService sourceService;
 
     @GetMapping("/accounts")
-    public List<Account> getAllAccounts() {
-        return accountService.getAllAccounts();
+    public List<Source> getAllAccounts() {
+        return sourceService.getAllSources();
     }
 
     @GetMapping("/accounts/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable(value = "id") Long accountId)
+    public ResponseEntity<Source> getAccountById(@PathVariable(value = "id") Long accountId)
             throws ResourceNotFoundException {
-        return ResponseEntity.ok(accountService.getAccountById(accountId));
+        return ResponseEntity.ok(sourceService.getSourceById(accountId));
     }
 
     @PostMapping("/accounts")
-    public Account createAccount(@RequestBody Account account) {
-        return accountService.createAccount(account);
+    public Source createAccount(@RequestBody Source source) {
+        return sourceService.saveOrUpdate(source);
     }
 
     @PutMapping("/accounts/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable(value = "id") Long accountId,
-        @RequestBody Account accountDetails) throws ResourceNotFoundException {
-        return ResponseEntity.ok(accountService.updateAccount(accountId, accountDetails));
+    public ResponseEntity<Source> updateAccount(@PathVariable(value = "id") Long sourceId,
+                                                @RequestBody SourceDto sourceDto) throws ResourceNotFoundException {
+        return null;
+//        return ResponseEntity.ok(sourceService.saveOrUpdate(sourceDto, sourceId));
     }
 
     @DeleteMapping("/accounts/{id}")
-    public Map<String, Boolean> deleteAccount(@PathVariable(value = "id") Long accountId)
+    public Map<String, Boolean> deleteAccount(@PathVariable(value = "id") Long sourceId)
         throws ResourceNotFoundException {
-        return accountService.deleteAccount(accountId);
+        return sourceService.deleteSource(sourceId);
     }
 }

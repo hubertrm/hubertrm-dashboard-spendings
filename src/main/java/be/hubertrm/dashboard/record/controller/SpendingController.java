@@ -2,7 +2,7 @@ package be.hubertrm.dashboard.record.controller;
 
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
 import be.hubertrm.dashboard.record.model.Spending;
-import be.hubertrm.dashboard.record.service.SpendingService;
+import be.hubertrm.dashboard.record.service.impl.SpendingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

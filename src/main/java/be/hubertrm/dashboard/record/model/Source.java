@@ -4,22 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "account")
+@Table(name = "source")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account {
+public class Source {
 
     private Long id;
     private String name;
-    private Timestamp creationDate;
+    private LocalDate creationDate;
     private Long organisationId;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="ISEQ$$_73190")
-    @SequenceGenerator(name="ISEQ$$_73190", sequenceName="ISEQ$$_73190", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -38,11 +37,11 @@ public class Account {
     }
 
     @Column(name = "creation_date", nullable = false)
-    public Timestamp getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -57,7 +56,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "Source{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", creationDate=" + creationDate +

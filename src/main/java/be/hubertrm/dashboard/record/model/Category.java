@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "category")
@@ -14,11 +14,10 @@ public class Category {
 
     private Long id;
     private String name;
-    private Timestamp creationDate;
+    private LocalDate creationDate;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="ISEQ$$_73183")
-    @SequenceGenerator(name="ISEQ$$_73183", sequenceName="ISEQ$$_73183", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -37,11 +36,11 @@ public class Category {
     }
 
     @Column(name = "creation_date", nullable = false)
-    public Timestamp getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 

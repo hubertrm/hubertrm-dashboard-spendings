@@ -2,56 +2,20 @@ package be.hubertrm.dashboard.record.service;
 
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
 import be.hubertrm.dashboard.record.model.Organisation;
-import be.hubertrm.dashboard.record.repository.OrganisationRepository;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Transactional
-@Service
-public class OrganisationService {
+public interface OrganisationService {
 
-    @Resource
-    private OrganisationRepository organisationRepository;
+    List<Organisation> getAllOrganisations();
 
-    private static final String SPENDING_NOT_FOUND_MESSAGE = "Organisation not found for this id :: ";
+    Organisation getOrganisationById(Long organisationId) throws ResourceNotFoundException;
 
-    public List<Organisation> getAllOrganisations() {
-        return organisationRepository.findAll();
-    }
+    Organisation createOrganisation(Organisation organisation);
 
-    public Organisation getOrganisationById(Long organisationId)
-            throws ResourceNotFoundException {
-        return organisationRepository.findById(organisationId).orElseThrow(
-                () -> new ResourceNotFoundException(SPENDING_NOT_FOUND_MESSAGE + organisationId)
-        );
-    }
+    Organisation updateOrganisation(Long organisationId, Organisation organisationDetails)
+            throws ResourceNotFoundException;
 
-    public Organisation createOrganisation(Organisation organisation) {
-        return organisationRepository.save(organisation);
-    }
-
-    public Organisation updateOrganisation(Long organisationId, Organisation organisationDetails)
-            throws ResourceNotFoundException {
-        Organisation organisation = organisationRepository.findById(organisationId)
-                .orElseThrow(() -> new ResourceNotFoundException(SPENDING_NOT_FOUND_MESSAGE + organisationId));
-
-        organisation.setName(organisationDetails.getName());
-
-        return organisationRepository.save(organisation);
-    }
-
-    public Map<String, Boolean> deleteOrganisation(Long organisationId) throws ResourceNotFoundException {
-        Organisation organisation = organisationRepository.findById(organisationId)
-                .orElseThrow(() -> new ResourceNotFoundException(SPENDING_NOT_FOUND_MESSAGE + organisationId));
-
-        organisationRepository.delete(organisation);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-    }
+    Map<String, Boolean> deleteOrganisation(Long organisationId) throws ResourceNotFoundException;
 }

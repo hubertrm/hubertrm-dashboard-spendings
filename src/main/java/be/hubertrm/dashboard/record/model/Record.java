@@ -1,46 +1,45 @@
 package be.hubertrm.dashboard.record.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import javax.persistence.*;
+import java.time.LocalDate;
 
+
+@Entity
+@Table(name = "record")
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class Record {
 
-    private long id;
-    private Date spendingDate;
+    private Long id;
+    private LocalDate payDate;
     private float amount;
-    private String category;
-    private String account;
-    private String note;
+    private long categoryId;
+    private long sourceId;
+    private String comments;
 
-    public Record(long id, Date spendingDate, float amount, String category, String account, String note) {
-        this.id = id;
-        this.spendingDate = spendingDate;
-        this.amount = amount;
-        this.category = category;
-        this.account = account;
-        this.note = note;
-    }
-
-    public long getId() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Date getSpendingDate() {
-        return spendingDate;
+    @Column(name = "pay_date", nullable = false)
+    public LocalDate getPayDate() {
+        return payDate;
     }
 
-    public void setSpendingDate(Date spendingDate) {
-        this.spendingDate = spendingDate;
+    public void setPayDate(LocalDate spendingDate) {
+        this.payDate = spendingDate;
     }
 
+    @Column(name = "amount", nullable = false)
     public float getAmount() {
         return amount;
     }
@@ -49,27 +48,30 @@ public class Record {
         this.amount = amount;
     }
 
-    public String getCategory() {
-        return category;
+    @Column(name = "category_id", nullable = false)
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getAccount() {
-        return account;
+    @Column(name = "source_id", nullable = false)
+    public long getSourceId() {
+        return sourceId;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setSourceId(long sourceId) {
+        this.sourceId = sourceId;
     }
 
-    public String getNote() {
-        return note;
+    @Column(name = "comments", nullable = true)
+    public String getComments() {
+        return comments;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setComments(String note) {
+        this.comments = note;
     }
 }

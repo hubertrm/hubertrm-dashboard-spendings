@@ -13,10 +13,10 @@ public class Organisation {
 
     private Long id;
     private String name;
+    private String address;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="ISEQ$$_73177")
-    @SequenceGenerator(name="ISEQ$$_73177", sequenceName="ISEQ$$_73177", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -34,11 +34,21 @@ public class Organisation {
         this.name = name;
     }
 
+    @Column(name = "address")
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "Organisation{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }

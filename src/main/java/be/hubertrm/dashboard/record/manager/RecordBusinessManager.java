@@ -1,61 +1,58 @@
 package be.hubertrm.dashboard.record.manager;
 
+import be.hubertrm.dashboard.record.dto.RecordDto;
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
+import be.hubertrm.dashboard.record.mapper.RecordMapper;
 import be.hubertrm.dashboard.record.model.Record;
-import be.hubertrm.dashboard.record.model.Spending;
-import be.hubertrm.dashboard.record.service.AccountService;
 import be.hubertrm.dashboard.record.service.CategoryService;
+import be.hubertrm.dashboard.record.service.SourceService;
 import be.hubertrm.dashboard.record.service.RecordService;
-import be.hubertrm.dashboard.record.service.SpendingService;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Component
 public class RecordBusinessManager {
 
     @Resource
-    private RecordService recordService;
+    private final RecordService recordService;
     @Resource
-    private SpendingService spendingService;
+    private final CategoryService categoryService;
     @Resource
-    private CategoryService categoryService;
-    @Resource
-    private AccountService accountService;
+    private final SourceService sourceService;
 
-    public RecordBusinessManager(RecordService recordService, SpendingService spendingService, CategoryService categoryService, AccountService accountService) {
+    private final RecordMapper recordMapper = Mappers.getMapper(RecordMapper.class);
+
+    public RecordBusinessManager(RecordService recordService, CategoryService categoryService,
+                                 SourceService sourceService) {
         this.recordService = recordService;
-        this.spendingService = spendingService;
         this.categoryService = categoryService;
-        this.accountService = accountService;
+        this.sourceService = sourceService;
     }
 
-    public List<Record> getAllRecords() {
-        return recordService.getAllRecords();
+    public List<RecordDto> getAllRecords() {
+        return recordMapper.toDtoList(recordService.getAllRecords());
     }
 
-    public long createRecord(Record record) throws ResourceNotFoundException {
-        Spending spending = new Spending();
-        spending.setSpendingDate(new Timestamp(record.getSpendingDate().getTime()));
-        spending.setAmount(record.getAmount());
-        spending.setNote(record.getNote());
-        spending.setCategoryId(categoryService.getCategoryByName(record.getCategory()).getId());
-        spending.setAccountId(accountService.getAccountByName(record.getAccount()).getId());
-
-        return spendingService.createSpending(spending).getId();
+    public RecordDto createOrUpdate(RecordDto recordDto) {
+        return recordMapper.toDto(recordService.createOrUpdate(recordMapper.toEntity(recordDto)));
     }
 
-    public long updateRecord(long recordId, Record recordDetails)
-            throws ResourceNotFoundException {
-        Spending spending = spendingService.findSpending(recordId);
-        spending.setSpendingDate(new Timestamp(recordDetails.getSpendingDate().getTime()));
-        spending.setAmount(recordDetails.getAmount());
-        spending.setNote(recordDetails.getNote());
-        spending.setCategoryId(categoryService.getCategoryByName(recordDetails.getCategory()).getId());
-        spending.setAccountId(accountService.getAccountByName(recordDetails.getAccount()).getId());
-
-        return spendingService.saveSpending(spending).getId();
+    public void deleteRecordById(Long id) {
+        recordService.deleteRecordById(id);
     }
+
+//    public long updateRecord(long recordId, Record recordDetails)
+//            throws ResourceNotFoundException {
+//        Spending spending = spendingService.findSpending(recordId);
+//        spending.setSpendingDate(new Timestamp(recordDetails.getPayDate().getTime()));
+//        spending.setAmount(recordDetails.getAmount());
+//        spending.setNote(recordDetails.getComments());
+//        spending.setCategoryId(categoryService.getCategoryByName(recordDetails.getCategoryId()).getId());
+//        spending.setAccountId(sourceService.getAccountByName(recordDetails.getSourceId()).getId());
+//
+//        return spendingService.saveSpending(spending).getId();
+//    }
 }

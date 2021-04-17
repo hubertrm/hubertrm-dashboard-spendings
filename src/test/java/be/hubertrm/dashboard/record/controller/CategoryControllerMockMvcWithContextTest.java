@@ -1,8 +1,9 @@
 package be.hubertrm.dashboard.record.controller;
 
+import be.hubertrm.dashboard.record.dto.CategoryDto;
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
+import be.hubertrm.dashboard.record.manager.CategoryBusinessManager;
 import be.hubertrm.dashboard.record.model.Category;
-import be.hubertrm.dashboard.record.service.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,14 +18,13 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureJsonTesters
@@ -32,50 +32,50 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class CategoryControllerMockMvcWithContextTest {
 
     private Long id;
-    private Category category;
+    private CategoryDto categoryDto;
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private CategoryService categoryService;
+    private CategoryBusinessManager categoryBusinessManager;
 
     @Autowired
-    private JacksonTester<Category> jsonCategory;
+    private JacksonTester<CategoryDto> jsonCategory;
 
     @Autowired
-    private JacksonTester<List<Category>> jsonCategoryList;
+    private JacksonTester<List<CategoryDto>> jsonCategoryList;
 
     @BeforeEach
     void setup() {
         id = 1L;
-        category = new Category(id, "test", new Timestamp(1L));
+        categoryDto = new CategoryDto(id, "test", LocalDate.now());
     }
 
     @Test
     void givenCategoryExists_whenRequestById_shouldReturnElement() throws Exception {
         // given
-        given(categoryService.getCategoryById(id)).willReturn(category);
+        given(categoryBusinessManager.getCategoryById(id)).willReturn(categoryDto);
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(get("/api/v1/categories/%s".formatted(id)).accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
+                mvc.perform(get(String.format("/api/v1/categories/%s", id)).accept(MediaType.APPLICATION_JSON))
+                        .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo(jsonCategory.write(category).getJson());
+        assertThat(response.getContentAsString()).isEqualTo(jsonCategory.write(categoryDto).getJson());
     }
 
     @Test
     void givenCategoryDoesNotExist_whenRequestById_shouldReturnNotFoundException() throws Exception {
         // given
-        given(categoryService.getCategoryById(id)).willThrow(ResourceNotFoundException.class);
+        given(categoryBusinessManager.getCategoryById(id)).willThrow(ResourceNotFoundException.class);
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(get("/api/v1/categories/%s".formatted(id)).accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
+                mvc.perform(get(String.format("/api/v1/categories/%s", id)).accept(MediaType.APPLICATION_JSON))
+                        .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -85,7 +85,7 @@ class CategoryControllerMockMvcWithContextTest {
     @Test
     void givenCategoryExists_whenRequestAll_shouldReturnSingletonList() throws Exception {
         // given
-        given(categoryService.getAllCategories()).willReturn(Collections.singletonList(category));
+        given(categoryBusinessManager.getAllCategories()).willReturn(Collections.singletonList(categoryDto));
 
         // when
         MockHttpServletResponse response =
@@ -95,14 +95,14 @@ class CategoryControllerMockMvcWithContextTest {
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString())
-                .isEqualTo(jsonCategoryList.write(Collections.singletonList(category)).getJson());
+                .isEqualTo(jsonCategoryList.write(Collections.singletonList(categoryDto)).getJson());
     }
 
     @Test
     void givenMultipleCategoriesExist_whenRequestAll_shouldReturnList() throws Exception {
-        Category category_2 = new Category(2L, "test", new Timestamp(1L));
+        CategoryDto category_2 = new CategoryDto(2L, "test", LocalDate.now());
         // given
-        given(categoryService.getAllCategories()).willReturn(Arrays.asList(category, category_2));
+        given(categoryBusinessManager.getAllCategories()).willReturn(Arrays.asList(categoryDto, category_2));
 
         // when
         MockHttpServletResponse response =
@@ -112,13 +112,13 @@ class CategoryControllerMockMvcWithContextTest {
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString())
-                .isEqualTo(jsonCategoryList.write(Arrays.asList(category, category_2)).getJson());
+                .isEqualTo(jsonCategoryList.write(Arrays.asList(categoryDto, category_2)).getJson());
     }
 
     @Test
     void givenNoCategoryExists_whenRequestAll_shouldReturnEmptyList() throws Exception {
         // given
-        given(categoryService.getAllCategories()).willReturn(Collections.emptyList());
+        given(categoryBusinessManager.getAllCategories()).willReturn(Collections.emptyList());
 
         // when
         MockHttpServletResponse response =
@@ -129,5 +129,73 @@ class CategoryControllerMockMvcWithContextTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString())
                 .isEqualTo(jsonCategoryList.write(Collections.emptyList()).getJson());
+    }
+
+    @Test
+    void givenCategoryDoesNotExist_whenRequestCreation_shouldReturnElement() throws Exception {
+        // given
+        given(categoryBusinessManager.createOrUpdate(any(CategoryDto.class))).willReturn(categoryDto);
+
+        // when
+        MockHttpServletResponse response =
+                mvc.perform(post("/api/v1/categories")
+                        .content(jsonCategory.write(categoryDto).getJson())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andReturn().getResponse();
+
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(jsonCategory.write(categoryDto).getJson());
+    }
+
+    @Test
+    void givenCategoryExists_whenRequestUpdate_shouldReturnUpdatedElement() throws Exception {
+        // given
+        given(categoryBusinessManager.createOrUpdate(any(CategoryDto.class))).willReturn(categoryDto);
+
+        // when
+        MockHttpServletResponse response =
+                mvc.perform(put(String.format("/api/v1/categories/%s", id))
+                        .content(jsonCategory.write(categoryDto).getJson())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andReturn().getResponse();
+
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(jsonCategory.write(categoryDto).getJson());
+    }
+
+    @Test
+    void givenCategoryExists_whenDelete_shouldReturnDeletedMessage() throws Exception {
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("deleted", Boolean.TRUE);
+        // given
+        given(categoryBusinessManager.deleteCategoryById(id)).willReturn(result);
+
+        // when
+        MockHttpServletResponse response =
+                mvc.perform(delete(String.format("/api/v1/categories/%s", id))
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andReturn().getResponse();
+
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    void givenCategoryDoesNotExist_whenDelete_shouldReturnNotFoundException() throws Exception {
+        // given
+        given(categoryBusinessManager.getCategoryById(id)).willThrow(ResourceNotFoundException.class);
+
+        // when
+        MockHttpServletResponse response =
+                mvc.perform(get(String.format("/api/v1/categories/%s", id)).accept(MediaType.APPLICATION_JSON))
+                        .andReturn().getResponse();
+
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+        assertThat(response.getContentAsString()).isNotInstanceOf(Category.class);
     }
 }

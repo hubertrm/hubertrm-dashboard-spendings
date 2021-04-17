@@ -2,65 +2,23 @@ package be.hubertrm.dashboard.record.service;
 
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
 import be.hubertrm.dashboard.record.model.Category;
-import be.hubertrm.dashboard.record.repository.CategoryRepository;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Transactional
-@Service
-public class CategoryService {
+public interface CategoryService {
 
-    @Resource
-    private CategoryRepository categoryRepository;
+    List<Category> getAllCategories();
 
-    private static final String CATEGORY_NOT_FOUND_MESSAGE = "Category not found for this id :: ";
-    private static final String CATEGORY_NOT_FOUND_BY_NAME_MESSAGE = "Category not found for this name :: ";
+    Category getCategoryById(Long categoryId) throws ResourceNotFoundException;
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
-    }
+    Category getCategoryByName(String name) throws ResourceNotFoundException;
 
-    public Category getCategoryById(Long categoryId)
-            throws ResourceNotFoundException {
-        return categoryRepository.findById(categoryId).orElseThrow(
-                () -> new ResourceNotFoundException(CATEGORY_NOT_FOUND_MESSAGE + categoryId)
-        );
-    }
+    Category createOrUpdate(Category category);
 
-    public Category getCategoryByName(String name)
-            throws ResourceNotFoundException {
-        return categoryRepository.findCategoryByName(name).orElseThrow(
-                () -> new ResourceNotFoundException(CATEGORY_NOT_FOUND_BY_NAME_MESSAGE + name)
-        );
-    }
+    Category updateCategory(Long categoryId, Category categoryDetails) throws ResourceNotFoundException;
 
-    public Category createCategory(Category organisation) {
-        return categoryRepository.save(organisation);
-    }
-
-    public Category updateCategory(Long categoryId, Category organisationDetails)
-            throws ResourceNotFoundException {
-        Category organisation = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY_NOT_FOUND_MESSAGE + categoryId));
-
-        organisation.setName(organisationDetails.getName());
-        organisation.setCreationDate(organisationDetails.getCreationDate());
-
-        return categoryRepository.save(organisation);
-    }
-
-    public Map<String, Boolean> deleteCategory(Long categoryId) throws ResourceNotFoundException {
-        Category organisation = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY_NOT_FOUND_MESSAGE + categoryId));
-
-        categoryRepository.delete(organisation);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-    }
+    Map<String, Boolean> deleteCategoryById(Long categoryId) throws ResourceNotFoundException;
 }
