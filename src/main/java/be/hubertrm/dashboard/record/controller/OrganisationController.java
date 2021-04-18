@@ -1,9 +1,8 @@
 package be.hubertrm.dashboard.record.controller;
 
+import be.hubertrm.dashboard.record.dto.OrganisationDto;
 import be.hubertrm.dashboard.record.exception.ResourceNotFoundException;
-import be.hubertrm.dashboard.record.model.Organisation;
-import be.hubertrm.dashboard.record.service.OrganisationService;
-import org.springframework.http.ResponseEntity;
+import be.hubertrm.dashboard.record.manager.OrganisationBusinessManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,33 +15,33 @@ import java.util.Map;
 public class OrganisationController {
 
     @Resource
-    private OrganisationService organisationService;
+    private OrganisationBusinessManager organisationBusinessManager;
 
     @GetMapping("/organisations")
-    public List<Organisation> getAllOrganisations() {
-        return organisationService.getAllOrganisations();
+    public List<OrganisationDto> getAllOrganisations() {
+        return organisationBusinessManager.getAllOrganisations();
     }
 
     @GetMapping("/organisations/{id}")
-    public ResponseEntity<Organisation> getOrganisationById(@PathVariable(value = "id") Long organisationId)
+    public OrganisationDto getOrganisationById(@PathVariable(value = "id") Long organisationId)
             throws ResourceNotFoundException {
-        return ResponseEntity.ok(organisationService.getOrganisationById(organisationId));
+        return organisationBusinessManager.getOrganisationById(organisationId);
     }
 
     @PostMapping("/organisations")
-    public Organisation createOrganisation(@RequestBody Organisation organisation) {
-        return organisationService.createOrganisation(organisation);
+    public OrganisationDto createOrganisation(@RequestBody OrganisationDto organisationDto) {
+        return organisationBusinessManager.createOrUpdate(organisationDto);
     }
 
     @PutMapping("/organisations/{id}")
-    public ResponseEntity<Organisation> updateOrganisation(@PathVariable(value = "id") Long organisationId,
-        @RequestBody Organisation organisationDetails) throws ResourceNotFoundException {
-        return ResponseEntity.ok(organisationService.updateOrganisation(organisationId, organisationDetails));
+    public OrganisationDto updateOrganisation(@PathVariable(value = "id") Long id,
+        @RequestBody OrganisationDto organisationDto) throws ResourceNotFoundException {
+        return organisationBusinessManager.createOrUpdate(organisationDto, id);
     }
 
     @DeleteMapping("/organisations/{id}")
-    public Map<String, Boolean> deleteOrganisation(@PathVariable(value = "id") Long organisationId)
+    public Map<String, Boolean> deleteOrganisation(@PathVariable(value = "id") Long id)
         throws ResourceNotFoundException {
-        return organisationService.deleteOrganisation(organisationId);
+        return organisationBusinessManager.deleteOrganisationById(id);
     }
 }

@@ -12,10 +12,10 @@ public interface OrganisationService {
 
     Organisation getOrganisationById(Long organisationId) throws ResourceNotFoundException;
 
-    Organisation createOrganisation(Organisation organisation);
+    Organisation createOrUpdate(Organisation organisation);
 
     Organisation updateOrganisation(Long organisationId, Organisation organisationDetails)
             throws ResourceNotFoundException;
 
-    Map<String, Boolean> deleteOrganisation(Long organisationId) throws ResourceNotFoundException;
+    Map<String, Boolean> deleteOrganisationById(Long organisationId) throws ResourceNotFoundException;
 }

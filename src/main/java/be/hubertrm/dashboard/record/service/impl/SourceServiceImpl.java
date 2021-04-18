@@ -39,7 +39,7 @@ public class SourceServiceImpl implements SourceService {
         );
     }
 
-    public Source saveOrUpdate(Source source) {
+    public Source createOrUpdate(Source source) {
         return sourceRepository.save(source);
     }
 
@@ -55,7 +55,7 @@ public class SourceServiceImpl implements SourceService {
         return sourceRepository.save(source);
     }
 
-    public Map<String, Boolean> deleteSource(Long sourceId) throws ResourceNotFoundException {
+    public Map<String, Boolean> deleteSourceById(Long sourceId) throws ResourceNotFoundException {
         Source source = sourceRepository.findById(sourceId)
                 .orElseThrow(() -> new ResourceNotFoundException(SOURCE_NOT_FOUND_MESSAGE + sourceId));
 

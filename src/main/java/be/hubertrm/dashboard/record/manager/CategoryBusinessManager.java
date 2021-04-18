@@ -34,20 +34,13 @@ public class CategoryBusinessManager {
     public CategoryDto createOrUpdate(CategoryDto categoryDto) {
         return categoryMapper.toDto(categoryService.createOrUpdate(categoryMapper.toEntity(categoryDto)));
     }
+
+    public CategoryDto createOrUpdate(CategoryDto categoryDto, Long id) {
+        categoryDto.setId(id);
+        return createOrUpdate(categoryDto);
+    }
     
     public Map<String, Boolean> deleteCategoryById(Long id) throws ResourceNotFoundException {
         return categoryService.deleteCategoryById(id);
     }
-
-//    public long updateCategory(long categoryId, Category categoryDetails)
-//            throws ResourceNotFoundException {
-//        Spending spending = spendingService.findSpending(categoryId);
-//        spending.setSpendingDate(new Timestamp(categoryDetails.getPayDate().getTime()));
-//        spending.setAmount(categoryDetails.getAmount());
-//        spending.setNote(categoryDetails.getComments());
-//        spending.setCategoryId(categoryService.getCategoryByName(categoryDetails.getCategoryId()).getId());
-//        spending.setAccountId(sourceService.getAccountByName(categoryDetails.getSourceId()).getId());
-//
-//        return spendingService.saveSpending(spending).getId();
-//    }
 }

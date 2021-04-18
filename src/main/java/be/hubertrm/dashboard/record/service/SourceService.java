@@ -13,9 +13,9 @@ public interface SourceService {
 
     Source getSourceByName(String name) throws ResourceNotFoundException;
 
-    Source saveOrUpdate(Source source);
+    Source createOrUpdate(Source source);
 
     Source updateSource(Long sourceId, Source sourceDetails) throws ResourceNotFoundException;
 
-    Map<String, Boolean> deleteSource(Long sourceId) throws ResourceNotFoundException;
+    Map<String, Boolean> deleteSourceById(Long sourceId) throws ResourceNotFoundException;
 }

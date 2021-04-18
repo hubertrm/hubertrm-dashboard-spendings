@@ -35,7 +35,7 @@ public class OrganisationServiceImpl implements OrganisationService {
     }
 
     @Override
-    public Organisation createOrganisation(Organisation organisation) {
+    public Organisation createOrUpdate(Organisation organisation) {
         return organisationRepository.save(organisation);
     }
 
@@ -51,7 +51,7 @@ public class OrganisationServiceImpl implements OrganisationService {
     }
 
     @Override
-    public Map<String, Boolean> deleteOrganisation(Long organisationId) throws ResourceNotFoundException {
+    public Map<String, Boolean> deleteOrganisationById(Long organisationId) throws ResourceNotFoundException {
         Organisation organisation = organisationRepository.findById(organisationId)
                 .orElseThrow(() -> new ResourceNotFoundException(SPENDING_NOT_FOUND_MESSAGE + organisationId));
 
