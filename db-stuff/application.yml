@@ -1,0 +1,30 @@
+
+spring:
+  application:
+    name: record-management
+
+  datasource:
+    platform: H2Dialect
+    url: jdbc:h2:mem:test/poc_db?currentSchema=RECORDMANAGEMENT
+    username:
+    password:
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+    continue-on-error: false
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+    show-sql: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    generate-ddl: false
+
+  liquibase:
+    change-log: classpath:liquibase/db-changelog.xml
+    default-schema: RECORDMANAGEMENT

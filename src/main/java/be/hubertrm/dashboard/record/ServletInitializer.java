@@ -1,4 +1,4 @@
-package be.hubertrm.dashboard.spending;
+package be.hubertrm.dashboard.record;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -7,7 +7,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(SpendingApplication.class);
+		return application.sources(RecordApplication.class);
 	}
 
 }
