@@ -1,4 +1,4 @@
-[![Java CI with Maven](https://github.com/hubertrm/hubertrm-dashboard-Record-Management/actions/workflows/maven.yml/badge.svg?branch=0.1.x)](https://github.com/hubertrm/hubertrm-dashboard-Record-Management/actions/workflows/maven.yml)
+[![Java CI with Maven](https://github.com/hubertrm/hubertrm-dashboard-Record-Management/actions/workflows/maven.yml/badge.svg?branch=0.1.x_DAS-16_hubertrm)](https://github.com/hubertrm/hubertrm-dashboard-Record-Management/actions/workflows/maven.yml)
 
 # hubertrm-dashboard-Record-Management
 
