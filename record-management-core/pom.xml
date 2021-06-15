@@ -15,6 +15,7 @@
 
     <properties>
         <spring.profiles.active>local,no-liquibase</spring.profiles.active>
+        <org.testcontainers.version>1.15.3</org.testcontainers.version>
     </properties>
 
     <dependencies>
@@ -65,8 +66,15 @@
         </dependency>
         <!--	TEST SCOPE	-->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${org.testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>oracle-xe</artifactId>
+            <version>${org.testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

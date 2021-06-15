@@ -2,11 +2,13 @@ package be.hubertrm.dashboard.record.core.repository;
 
 import be.hubertrm.dashboard.record.core.model.Category;
 import be.hubertrm.dashboard.record.core.sample.SampleDataService;
+import be.hubertrm.dashboard.record.core.spring.DatabaseTestConfig;
 import be.hubertrm.dashboard.record.core.spring.PersistenceTestConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -16,11 +18,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ContextConfiguration(classes = PersistenceTestConfig.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Testcontainers
 @Transactional
-class CategoryRepositoryTest {
+class CategoryRepositoryTest extends DatabaseTestConfig {
 
     @Resource
     private CategoryRepository categoryRepository;
