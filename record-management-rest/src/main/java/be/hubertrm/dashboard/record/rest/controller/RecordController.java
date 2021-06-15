@@ -1,8 +1,8 @@
 package be.hubertrm.dashboard.record.rest.controller;
 
-import be.hubertrm.dashboard.record.rest.dto.RecordDto;
-import be.hubertrm.dashboard.record.rest.exception.ResourceNotFoundException;
-import be.hubertrm.dashboard.record.rest.manager.RecordBusinessManager;
+import be.hubertrm.dashboard.record.core.dto.RecordDto;
+import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;
+import be.hubertrm.dashboard.record.core.manager.RecordBusinessManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +30,11 @@ public class RecordController {
     @PostMapping("/record")
     public RecordDto createRecord(@RequestBody RecordDto recordDto) throws ResourceNotFoundException {
         return recordBusinessManager.createOrUpdate(recordDto);
+    }
+
+    @PostMapping("/records")
+    public List<RecordDto> saveRecords(@RequestBody List<RecordDto> recordDtoCollection) {
+        return recordBusinessManager.createOrUpdate(recordDtoCollection);
     }
 
     @PutMapping("/record/{id}")

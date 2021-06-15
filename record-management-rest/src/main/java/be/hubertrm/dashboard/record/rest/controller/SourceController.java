@@ -1,8 +1,8 @@
 package be.hubertrm.dashboard.record.rest.controller;
 
-import be.hubertrm.dashboard.record.rest.dto.SourceDto;
-import be.hubertrm.dashboard.record.rest.exception.ResourceNotFoundException;
-import be.hubertrm.dashboard.record.rest.manager.SourceBusinessManager;
+import be.hubertrm.dashboard.record.core.dto.SourceDto;
+import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;
+import be.hubertrm.dashboard.record.core.manager.SourceBusinessManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

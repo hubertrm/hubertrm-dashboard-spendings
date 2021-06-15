@@ -1,10 +1,10 @@
 package be.hubertrm.dashboard.record.rest.controller;
 
-import be.hubertrm.dashboard.record.rest.dto.OrganisationDto;
-import be.hubertrm.dashboard.record.rest.exception.ResourceNotFoundException;
-import be.hubertrm.dashboard.record.rest.manager.OrganisationBusinessManager;
-import be.hubertrm.dashboard.record.rest.model.Organisation;
-import be.hubertrm.dashboard.record.rest.sample.SampleDataService;
+import be.hubertrm.dashboard.record.core.dto.OrganisationDto;
+import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;
+import be.hubertrm.dashboard.record.core.manager.OrganisationBusinessManager;
+import be.hubertrm.dashboard.record.core.model.Organisation;
+import be.hubertrm.dashboard.record.core.sample.SampleDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
