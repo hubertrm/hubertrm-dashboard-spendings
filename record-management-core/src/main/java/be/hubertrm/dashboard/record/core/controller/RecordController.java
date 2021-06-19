@@ -1,13 +1,13 @@
-package be.hubertrm.dashboard.record.rest.controller;
+package be.hubertrm.dashboard.record.core.controller;
 
 import be.hubertrm.dashboard.record.core.dto.RecordDto;
 import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;
 import be.hubertrm.dashboard.record.core.manager.RecordBusinessManager;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -28,6 +28,7 @@ public class RecordController {
     }
 
     @PostMapping("/record")
+    @ResponseStatus(HttpStatus.CREATED)
     public RecordDto createRecord(@RequestBody RecordDto recordDto) throws ResourceNotFoundException {
         return recordBusinessManager.createOrUpdate(recordDto);
     }
@@ -44,8 +45,8 @@ public class RecordController {
     }
 
     @DeleteMapping("/record/{id}")
-    public Map<String, Boolean> deleteRecordById(@PathVariable(value = "id") Long recordId)
+    public void deleteRecordById(@PathVariable(value = "id") Long recordId)
             throws ResourceNotFoundException {
-        return recordBusinessManager.deleteRecordById(recordId);
+        recordBusinessManager.deleteRecordById(recordId);
     }
 }

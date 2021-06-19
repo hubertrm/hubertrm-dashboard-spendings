@@ -4,16 +4,14 @@ import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;
 import be.hubertrm.dashboard.record.core.model.Record;
 import be.hubertrm.dashboard.record.core.repository.RecordRepository;
 import be.hubertrm.dashboard.record.core.service.RecordService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.apache.commons.collections4.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class RecordServiceImpl implements RecordService {
@@ -26,8 +24,8 @@ public class RecordServiceImpl implements RecordService {
     private static final String RECORD_NOT_FOUND_MESSAGE = "Record not found for this id :: ";
 
     @Override
-    public Record createOrUpdate(final Record record) {
-        final Record savedRecord = recordRepository.save(record);
+    public Record createOrUpdate(final Record rec) {
+        final var savedRecord = recordRepository.save(rec);
 
         LOGGER.debug("Created/Updated record with id [{}]", savedRecord.getId());
         return savedRecord;
@@ -54,13 +52,10 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public Map<String, Boolean> deleteRecordById(Long id) throws ResourceNotFoundException {
-        Record record = recordRepository.findById(id)
+    public void deleteRecordById(Long id) throws ResourceNotFoundException {
+        Record rec = recordRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(RECORD_NOT_FOUND_MESSAGE + id));
 
-        recordRepository.delete(record);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        recordRepository.delete(rec);
     }
 }

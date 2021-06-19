@@ -15,7 +15,6 @@
 	<description>Rest API for the Record Application</description>
 	<modules>
 		<module>record-management-core</module>
-		<module>record-management-rest</module>
 		<module>record-management-files</module>
 	</modules>
 	<properties>

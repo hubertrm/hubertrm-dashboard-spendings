@@ -1,8 +1,8 @@
-package be.hubertrm.dashboard.record.rest.controller;
+package be.hubertrm.dashboard.record.core.controller;
 
-import be.hubertrm.dashboard.record.core.dto.RecordDto;
+import be.hubertrm.dashboard.record.core.dto.SourceDto;
 import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;
-import be.hubertrm.dashboard.record.core.manager.RecordBusinessManager;
+import be.hubertrm.dashboard.record.core.manager.SourceBusinessManager;
 import be.hubertrm.dashboard.record.core.sample.SampleDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,155 +29,155 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureJsonTesters
-@WebMvcTest(RecordController.class)
-class RecordControllerMockMvcWithContextTest {
+@WebMvcTest(SourceController.class)
+class SourceControllerMockMvcWithContextTest {
 
     private Long id;
-    private RecordDto recordDto;
+    private SourceDto sourceDto;
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private RecordBusinessManager recordBusinessManager;
+    private SourceBusinessManager sourceBusinessManager;
 
     @Autowired
-    private JacksonTester<RecordDto> jsonRecord;
+    private JacksonTester<SourceDto> jsonSource;
 
     @Autowired
-    private JacksonTester<List<RecordDto>> jsonRecordList;
+    private JacksonTester<List<SourceDto>> jsonSourceList;
 
     @BeforeEach
     void setup() {
         id = 1L;
-        recordDto = SampleDataService.createRecordDto();
+        sourceDto = SampleDataService.createSourceDto();
     }
 
     @Test
-    void givenRecordExists_whenRequestById_shouldReturnElement() throws Exception {
+    void givenSourceExists_whenRequestById_shouldReturnElement() throws Exception {
         // given
-        given(recordBusinessManager.getRecordById(id)).willReturn(recordDto);
+        given(sourceBusinessManager.getSourceById(id)).willReturn(sourceDto);
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(get(String.format("/api/v1/record/%s", id)).accept(MediaType.APPLICATION_JSON))
+                mvc.perform(get(String.format("/api/v1/source/%s", id)).accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo(jsonRecord.write(recordDto).getJson());
+        assertThat(response.getContentAsString()).isEqualTo(jsonSource.write(sourceDto).getJson());
     }
 
     @Test
-    void givenRecordDoesNotExist_whenRequestById_shouldReturnNotFoundException() throws Exception {
+    void givenSourceDoesNotExist_whenRequestById_shouldReturnNotFoundException() throws Exception {
         // given
-        given(recordBusinessManager.getRecordById(id)).willThrow(ResourceNotFoundException.class);
+        given(sourceBusinessManager.getSourceById(id)).willThrow(ResourceNotFoundException.class);
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(get(String.format("/api/v1/record/%s", id)).accept(MediaType.APPLICATION_JSON))
+                mvc.perform(get(String.format("/api/v1/source/%s", id)).accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-        assertThat(response.getContentAsString()).isNotInstanceOf(RecordDto.class);
+        assertThat(response.getContentAsString()).isNotInstanceOf(SourceDto.class);
     }
 
     @Test
-    void givenRecordExists_whenRequestAll_shouldReturnSingletonList() throws Exception {
+    void givenSourceExists_whenRequestAll_shouldReturnSingletonList() throws Exception {
         // given
-        given(recordBusinessManager.getAllRecords()).willReturn(Collections.singletonList(recordDto));
+        given(sourceBusinessManager.getAllSources()).willReturn(Collections.singletonList(sourceDto));
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(get("/api/v1/records").accept(MediaType.APPLICATION_JSON))
+                mvc.perform(get("/api/v1/sources").accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString())
-                .isEqualTo(jsonRecordList.write(Collections.singletonList(recordDto)).getJson());
+                .isEqualTo(jsonSourceList.write(Collections.singletonList(sourceDto)).getJson());
     }
 
     @Test
-    void givenMultipleRecordsExist_whenRequestAll_shouldReturnList() throws Exception {
-        RecordDto record_2 = SampleDataService.createRecordDto();
+    void givenMultipleSourcesExist_whenRequestAll_shouldReturnList() throws Exception {
+        SourceDto source_2 = new SourceDto(2L, "test", LocalDate.now(), 1L);
         // given
-        given(recordBusinessManager.getAllRecords()).willReturn(Arrays.asList(recordDto, record_2));
+        given(sourceBusinessManager.getAllSources()).willReturn(Arrays.asList(sourceDto, source_2));
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(get("/api/v1/records").accept(MediaType.APPLICATION_JSON))
+                mvc.perform(get("/api/v1/sources").accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString())
-                .isEqualTo(jsonRecordList.write(Arrays.asList(recordDto, record_2)).getJson());
+                .isEqualTo(jsonSourceList.write(Arrays.asList(sourceDto, source_2)).getJson());
     }
 
     @Test
-    void givenNoRecordExists_whenRequestAll_shouldReturnEmptyList() throws Exception {
+    void givenNoSourceExists_whenRequestAll_shouldReturnEmptyList() throws Exception {
         // given
-        given(recordBusinessManager.getAllRecords()).willReturn(Collections.emptyList());
+        given(sourceBusinessManager.getAllSources()).willReturn(Collections.emptyList());
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(get("/api/v1/records").accept(MediaType.APPLICATION_JSON))
+                mvc.perform(get("/api/v1/sources").accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString())
-                .isEqualTo(jsonRecordList.write(Collections.emptyList()).getJson());
+                .isEqualTo(jsonSourceList.write(Collections.emptyList()).getJson());
     }
 
     @Test
-    void givenRecordDoesNotExist_whenRequestCreation_shouldReturnElement() throws Exception {
+    void givenSourceDoesNotExist_whenRequestCreation_shouldReturnElement() throws Exception {
         // given
-        given(recordBusinessManager.createOrUpdate(any(RecordDto.class))).willReturn(recordDto);
+        given(sourceBusinessManager.createOrUpdate(any(SourceDto.class))).willReturn(sourceDto);
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(post("/api/v1/record")
-                        .content(jsonRecord.write(recordDto).getJson())
+                mvc.perform(post("/api/v1/source")
+                        .content(jsonSource.write(sourceDto).getJson())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo(jsonRecord.write(recordDto).getJson());
+        assertThat(response.getContentAsString()).isEqualTo(jsonSource.write(sourceDto).getJson());
     }
 
     @Test
-    void givenRecordExists_whenRequestUpdate_shouldReturnUpdatedElement() throws Exception {
+    void givenSourceExists_whenRequestUpdate_shouldReturnUpdatedElement() throws Exception {
         // given
-        given(recordBusinessManager.createOrUpdate(any(RecordDto.class), anyLong())).willReturn(recordDto);
+        given(sourceBusinessManager.createOrUpdate(any(SourceDto.class), anyLong())).willReturn(sourceDto);
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(put(String.format("/api/v1/record/%s", id))
-                        .content(jsonRecord.write(recordDto).getJson())
+                mvc.perform(put(String.format("/api/v1/source/%s", id))
+                        .content(jsonSource.write(sourceDto).getJson())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo(jsonRecord.write(recordDto).getJson());
+        assertThat(response.getContentAsString()).isEqualTo(jsonSource.write(sourceDto).getJson());
     }
 
     @Test
-    void givenRecordExists_whenDelete_shouldReturnDeletedMessage() throws Exception {
+    void givenSourceExists_whenDelete_shouldReturnDeletedMessage() throws Exception {
         Map<String, Boolean> result = new HashMap<>();
         result.put("deleted", Boolean.TRUE);
         // given
-        given(recordBusinessManager.deleteRecordById(id)).willReturn(result);
+        given(sourceBusinessManager.deleteSourceById(id)).willReturn(result);
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(delete(String.format("/api/v1/record/%s", id))
+                mvc.perform(delete(String.format("/api/v1/source/%s", id))
                         .accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
@@ -185,17 +186,17 @@ class RecordControllerMockMvcWithContextTest {
     }
 
     @Test
-    void givenRecordDoesNotExist_whenDelete_shouldReturnNotFoundException() throws Exception {
+    void givenSourceDoesNotExist_whenDelete_shouldReturnNotFoundException() throws Exception {
         // given
-        given(recordBusinessManager.deleteRecordById(id)).willThrow(ResourceNotFoundException.class);
+        given(sourceBusinessManager.deleteSourceById(id)).willThrow(ResourceNotFoundException.class);
 
         // when
         MockHttpServletResponse response =
-                mvc.perform(delete(String.format("/api/v1/record/%s", id)).accept(MediaType.APPLICATION_JSON))
+                mvc.perform(delete(String.format("/api/v1/source/%s", id)).accept(MediaType.APPLICATION_JSON))
                         .andReturn().getResponse();
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-        assertThat(response.getContentAsString()).isNotInstanceOf(RecordDto.class);
+        assertThat(response.getContentAsString()).isNotInstanceOf(SourceDto.class);
     }
 }

@@ -1,4 +1,4 @@
-package be.hubertrm.dashboard.record.rest.controller;
+package be.hubertrm.dashboard.record.files.controller;
 
 import be.hubertrm.dashboard.record.core.dto.RecordDto;
 import be.hubertrm.dashboard.record.files.enums.FileType;

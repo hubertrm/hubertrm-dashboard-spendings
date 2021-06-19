@@ -1,4 +1,4 @@
-package be.hubertrm.dashboard.record.core.spring;
+package be.hubertrm.dashboard.record.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;

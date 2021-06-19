@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class RecordBusinessManager {
@@ -45,7 +44,7 @@ public class RecordBusinessManager {
         return recordMapper.toDtoList(recordService.createOrUpdate(recordMapper.toEntityList(recordDto)));
     }
 
-    public Map<String, Boolean> deleteRecordById(Long id) throws ResourceNotFoundException {
-        return recordService.deleteRecordById(id);
+    public void deleteRecordById(Long id) throws ResourceNotFoundException {
+        recordService.deleteRecordById(id);
     }
 }

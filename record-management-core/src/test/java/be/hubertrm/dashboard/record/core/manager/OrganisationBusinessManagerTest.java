@@ -2,7 +2,7 @@ package be.hubertrm.dashboard.record.core.manager;
 
 import be.hubertrm.dashboard.record.core.dto.OrganisationDto;
 import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;
-import be.hubertrm.dashboard.record.core.spring.TestConfig;
+import be.hubertrm.dashboard.record.core.TestConfig;
 import be.hubertrm.dashboard.record.core.sample.SampleDataService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

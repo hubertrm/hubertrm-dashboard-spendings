@@ -1,4 +1,4 @@
-package be.hubertrm.dashboard.record.rest.controller;
+package be.hubertrm.dashboard.record.core.controller;
 
 import be.hubertrm.dashboard.record.core.dto.OrganisationDto;
 import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;

@@ -3,7 +3,7 @@ package be.hubertrm.dashboard.record.core.manager;
 import be.hubertrm.dashboard.record.core.dto.CategoryDto;
 import be.hubertrm.dashboard.record.core.exception.ResourceNotFoundException;
 import be.hubertrm.dashboard.record.core.sample.SampleDataService;
-import be.hubertrm.dashboard.record.core.spring.TestConfig;
+import be.hubertrm.dashboard.record.core.TestConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

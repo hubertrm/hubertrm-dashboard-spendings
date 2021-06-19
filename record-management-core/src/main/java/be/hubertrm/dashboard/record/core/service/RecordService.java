@@ -6,12 +6,11 @@ import be.hubertrm.dashboard.record.core.model.Record;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Transactional
 public interface RecordService {
 
-    Record createOrUpdate(final Record record);
+    Record createOrUpdate(final Record rec);
 
     Collection<Record> createOrUpdate(final Collection<Record> records);
 
@@ -19,5 +18,5 @@ public interface RecordService {
 
     Record getRecordById(Long id) throws ResourceNotFoundException;
 
-    Map<String, Boolean> deleteRecordById(Long id) throws ResourceNotFoundException;
+    void deleteRecordById(Long id) throws ResourceNotFoundException;
 }
